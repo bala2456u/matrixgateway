@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://matrixgateway.co.in"),
   title: {
-    default: "MatrixGateway — Sell Crypto, Get INR Instantly",
+    default: "MatrixGateway — Accept USDT Payments, Settle in Minutes",
     template: "%s · MatrixGateway",
   },
   description:
-    "India's professional crypto off-ramp. Sell USDT, BTC, ETH and more — receive INR in your bank account within minutes via IMPS. KYC-compliant, TDS-ready.",
+    "Crypto payment gateway for Indian businesses. Accept USDT on TRC-20, BEP-20, ERC-20 and Solana — hosted checkout, one-call REST API, signed IPN callbacks, 0.5% per settled payment.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
