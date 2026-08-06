@@ -5,6 +5,47 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { audit } from "@/lib/audit";
 import { reconcileOrderWithTx, ReconcileError } from "@/lib/reconcile";
+import { setSetting, SETTING_DEFAULTS, type SettingKey } from "@/lib/settings";
+
+const SETTING_RULES: Record<SettingKey, { label: string; min: number; max: number }> = {
+  service_fee_bps: { label: "Service fee", min: 0, max: 1000 },
+  payment_window_minutes: { label: "Payment window", min: 5, max: 1440 },
+  min_payment_usdt: { label: "Minimum payment", min: 0.1, max: 10000 },
+  underpayment_tolerance_bps: { label: "Underpayment tolerance", min: 0, max: 1000 },
+};
+
+export async function savePlatformSettings(
+  _prev: { ok: boolean; error?: string } | null,
+  formData: FormData
+): Promise<{ ok: boolean; error?: string }> {
+  const admin = await requireAdmin();
+  for (const key of Object.keys(SETTING_DEFAULTS) as SettingKey[]) {
+    const raw = formData.get(key);
+    if (raw == null) continue;
+    const n = Number(String(raw));
+    const rule = SETTING_RULES[key];
+    if (!Number.isFinite(n) || n < rule.min || n > rule.max) {
+      return { ok: false, error: `${rule.label} must be between ${rule.min} and ${rule.max}` };
+    }
+    await setSetting(key, String(n));
+  }
+  await audit("platform.settings_update", { userId: admin.id });
+  revalidatePath("/admin/settings");
+  return { ok: true };
+}
+
+export async function setMerchantEnabled(userId: string, enabled: boolean) {
+  const admin = await requireAdmin();
+  const target = await prisma.user.findUnique({ where: { id: userId } });
+  if (!target || target.role === "ADMIN") return { ok: false, error: "Cannot modify this account" };
+  await prisma.user.update({
+    where: { id: userId },
+    data: { kycStatus: enabled ? "VERIFIED" : "REJECTED" },
+  });
+  await audit(enabled ? "merchant.enable" : "merchant.disable", { userId: admin.id, detail: target.email });
+  revalidatePath("/admin/merchants");
+  return { ok: true };
+}
 
 export async function approveKyc(profileId: string) {
   const admin = await requireAdmin();

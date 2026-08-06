@@ -3,7 +3,17 @@ import { Logo } from "@/components/logo";
 import { LogoutButton } from "@/components/logout-button";
 import { NavLink } from "@/components/nav-link";
 import { Badge } from "@/components/ui";
-import { LayoutDashboard, ShieldCheck, ReceiptText, Users, ScrollText, Wallet } from "lucide-react";
+import {
+  LayoutDashboard,
+  ShieldCheck,
+  ReceiptText,
+  Users,
+  ScrollText,
+  Wallet,
+  CreditCard,
+  Settings,
+  Store,
+} from "lucide-react";
 
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   const user = await requireAdmin();
@@ -21,20 +31,33 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
           <NavLink href="/admin" exact>
             <LayoutDashboard className="h-4 w-4" /> Overview
           </NavLink>
+          <NavLink href="/admin/payments">
+            <CreditCard className="h-4 w-4" /> Payments
+          </NavLink>
+          <NavLink href="/admin/merchants">
+            <Store className="h-4 w-4" /> Merchants
+          </NavLink>
+          <NavLink href="/admin/wallets">
+            <Wallet className="h-4 w-4" /> Wallets
+          </NavLink>
+          <NavLink href="/admin/settings">
+            <Settings className="h-4 w-4" /> Settings
+          </NavLink>
+          <NavLink href="/admin/audit">
+            <ScrollText className="h-4 w-4" /> Audit log
+          </NavLink>
+
+          <p className="mt-5 px-3.5 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
+            Off-ramp
+          </p>
           <NavLink href="/admin/kyc">
             <ShieldCheck className="h-4 w-4" /> KYC queue
           </NavLink>
           <NavLink href="/admin/orders">
             <ReceiptText className="h-4 w-4" /> Orders
           </NavLink>
-          <NavLink href="/admin/wallets">
-            <Wallet className="h-4 w-4" /> Wallets
-          </NavLink>
           <NavLink href="/admin/users">
             <Users className="h-4 w-4" /> Users
-          </NavLink>
-          <NavLink href="/admin/audit">
-            <ScrollText className="h-4 w-4" /> Audit log
           </NavLink>
         </nav>
         <div className="border-t border-slate-800 pt-4">
