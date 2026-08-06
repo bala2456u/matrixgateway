@@ -23,12 +23,21 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const demo = process.env.GATEWAY_MODE !== "live";
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {demo && (
+          <div className="sticky top-0 z-50 bg-amber-500 px-4 py-2 text-center text-sm font-semibold text-amber-950">
+            DEMO — this is a test environment. Deposit addresses are not real wallets and INR payouts
+            are simulated. Do not send real crypto.
+          </div>
+        )}
+        {children}
+      </body>
     </html>
   );
 }
