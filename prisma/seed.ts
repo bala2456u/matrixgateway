@@ -84,61 +84,11 @@ const assets: AssetSeed[] = [
       },
     ],
   },
-  {
-    symbol: "BTC",
-    name: "Bitcoin",
-    coingeckoId: "bitcoin",
-    decimals: 8,
-    minSellAmount: "0.0002",
-    sortOrder: 1,
-    networks: [
-      {
-        code: "BTC",
-        name: "Bitcoin",
-        addressFamily: "BITCOIN",
-        confirmationsRequired: 2,
-        avgSettleMinutes: 20,
-        sortOrder: 0,
-      },
-    ],
-  },
-  {
-    symbol: "ETH",
-    name: "Ethereum",
-    coingeckoId: "ethereum",
-    decimals: 8,
-    minSellAmount: "0.005",
-    sortOrder: 2,
-    networks: [
-      {
-        code: "ERC20",
-        name: "Ethereum (ERC-20)",
-        addressFamily: "EVM",
-        confirmationsRequired: 6,
-        avgSettleMinutes: 8,
-        sortOrder: 0,
-      },
-    ],
-  },
-  {
-    symbol: "SOL",
-    name: "Solana",
-    coingeckoId: "solana",
-    decimals: 8,
-    minSellAmount: "0.1",
-    sortOrder: 3,
-    networks: [
-      {
-        code: "SOL",
-        name: "Solana",
-        addressFamily: "SOLANA",
-        confirmationsRequired: 1,
-        avgSettleMinutes: 1,
-        sortOrder: 0,
-      },
-    ],
-  },
 ];
+
+/// Assets retired from the platform — disabled rather than deleted so existing
+/// historical orders keep their references.
+const RETIRED_SYMBOLS = ["BTC", "ETH", "SOL"];
 
 async function main() {
   for (const a of assets) {
@@ -159,6 +109,17 @@ async function main() {
     }
   }
 
+  // USDT-only platform: retire everything else
+  const retired = await prisma.asset.updateMany({
+    where: { symbol: { in: RETIRED_SYMBOLS } },
+    data: { enabled: false },
+  });
+  if (retired.count > 0) console.log(`Disabled ${retired.count} non-USDT asset(s).`);
+  await prisma.assetNetwork.updateMany({
+    where: { asset: { symbol: { in: RETIRED_SYMBOLS } } },
+    data: { enabled: false },
+  });
+
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "admin@matrixgateway.co.in";
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? randomBytes(9).toString("base64url");
   const existing = await prisma.user.findUnique({ where: { email: adminEmail } });
@@ -178,7 +139,17 @@ async function main() {
     console.log("Admin user already exists, skipping.");
   }
 
-  console.log(`Seeded ${assets.length} assets with networks.`);
+  // Baseline platform settings (admin-editable from the panel afterwards)
+  for (const [key, value] of Object.entries({
+    service_fee_bps: "50",
+    payment_window_minutes: "60",
+    min_payment_usdt: "1",
+    underpayment_tolerance_bps: "100",
+  })) {
+    await prisma.platformSetting.upsert({ where: { key }, update: {}, create: { key, value } });
+  }
+
+  console.log(`Seeded ${assets.length} asset(s) with networks.`);
 }
 
 main()

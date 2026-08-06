@@ -10,6 +10,9 @@ import {
   ShieldCheck,
   Landmark,
   Code2,
+  CreditCard,
+  Link2,
+  Settings,
 } from "lucide-react";
 
 export default async function DashboardLayout({ children }: LayoutProps<"/dashboard">) {
@@ -28,6 +31,22 @@ export default async function DashboardLayout({ children }: LayoutProps<"/dashbo
           <NavLink href="/dashboard" exact>
             <LayoutDashboard className="h-4 w-4" /> Overview
           </NavLink>
+          <NavLink href="/dashboard/payments">
+            <CreditCard className="h-4 w-4" /> Payments
+          </NavLink>
+          <NavLink href="/dashboard/links">
+            <Link2 className="h-4 w-4" /> Payment links
+          </NavLink>
+          <NavLink href="/dashboard/developer">
+            <Code2 className="h-4 w-4" /> Developers
+          </NavLink>
+          <NavLink href="/dashboard/settings">
+            <Settings className="h-4 w-4" /> Settings
+          </NavLink>
+
+          <p className="mt-5 px-3.5 text-[10px] font-semibold uppercase tracking-wider text-slate-600">
+            Off-ramp
+          </p>
           <NavLink href="/dashboard/sell">
             <ArrowDownUp className="h-4 w-4" /> Sell crypto
           </NavLink>
@@ -39,9 +58,6 @@ export default async function DashboardLayout({ children }: LayoutProps<"/dashbo
           </NavLink>
           <NavLink href="/dashboard/banks">
             <Landmark className="h-4 w-4" /> Bank accounts
-          </NavLink>
-          <NavLink href="/dashboard/developer">
-            <Code2 className="h-4 w-4" /> Developer
           </NavLink>
         </nav>
         <div className="border-t border-slate-800 pt-4">

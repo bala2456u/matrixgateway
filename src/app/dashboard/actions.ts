@@ -6,8 +6,82 @@ import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
 import { audit } from "@/lib/audit";
 import { generateApiKey, generateWebhookSecret } from "@/lib/ids";
+import { newInvoiceToken } from "@/lib/payments";
+import { newIpnSecret } from "@/lib/ipn";
+import { baseUrl } from "@/lib/urls";
 
-export type ActionResult = { ok: boolean; error?: string; secret?: string };
+export type ActionResult = { ok: boolean; error?: string; secret?: string; url?: string };
+
+// ---------- Payment links ----------
+
+const linkSchema = z.object({
+  priceAmount: z.coerce.number().positive("Enter an amount greater than zero"),
+  priceCurrency: z.enum(["INR", "USD", "USDT"]).default("INR"),
+  orderId: z.string().trim().max(200).optional().or(z.literal("")),
+  orderDescription: z.string().trim().max(500).optional().or(z.literal("")),
+});
+
+export async function createPaymentLink(_prev: ActionResult | null, formData: FormData): Promise<ActionResult> {
+  const user = await requireUser();
+  const parsed = linkSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
+  const d = parsed.data;
+
+  const invoice = await prisma.invoice.create({
+    data: {
+      token: newInvoiceToken(),
+      merchantId: user.id,
+      priceAmount: d.priceAmount.toString(),
+      priceCurrency: d.priceCurrency,
+      payCurrency: "USDT",
+      orderId: d.orderId || null,
+      orderDescription: d.orderDescription || null,
+    },
+  });
+  await audit("invoice.create", { userId: user.id, detail: invoice.token });
+  revalidatePath("/dashboard/links");
+  return { ok: true, url: `${baseUrl()}/pay/${invoice.token}` };
+}
+
+export async function deletePaymentLink(id: string): Promise<ActionResult> {
+  const user = await requireUser();
+  const inv = await prisma.invoice.findFirst({
+    where: { id, merchantId: user.id },
+    include: { payments: { select: { id: true }, take: 1 } },
+  });
+  if (!inv) return { ok: false, error: "Not found" };
+  if (inv.payments.length > 0) return { ok: false, error: "This link already has payments and can't be deleted" };
+  await prisma.invoice.delete({ where: { id } });
+  revalidatePath("/dashboard/links");
+  return { ok: true };
+}
+
+// ---------- Merchant profile & IPN ----------
+
+export async function saveMerchantProfile(_prev: ActionResult | null, formData: FormData): Promise<ActionResult> {
+  const user = await requireUser();
+  const businessName = String(formData.get("businessName") ?? "").trim().slice(0, 120);
+  const brandColor = String(formData.get("brandColor") ?? "").trim();
+  if (brandColor && !/^#[0-9a-fA-F]{6}$/.test(brandColor)) {
+    return { ok: false, error: "Brand colour must be a hex value like #10b981" };
+  }
+  await prisma.user.update({
+    where: { id: user.id },
+    data: { businessName: businessName || null, brandColor: brandColor || "#10b981" },
+  });
+  await audit("merchant.profile_update", { userId: user.id });
+  revalidatePath("/dashboard/settings");
+  return { ok: true };
+}
+
+export async function rotateIpnSecret(): Promise<ActionResult> {
+  const user = await requireUser();
+  const secret = newIpnSecret();
+  await prisma.user.update({ where: { id: user.id }, data: { ipnSecret: secret } });
+  await audit("merchant.ipn_rotate", { userId: user.id });
+  revalidatePath("/dashboard/settings");
+  return { ok: true, secret };
+}
 
 // ---------- KYC ----------
 
