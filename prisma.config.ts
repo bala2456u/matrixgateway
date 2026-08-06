@@ -10,7 +10,10 @@ try {
 export default defineConfig({
   schema: "prisma/schema.prisma",
   datasource: {
-    url: process.env.DATABASE_URL!,
+    // `prisma generate` runs at build time, where DATABASE_URL may not be
+    // injected yet. It doesn't need a real URL — only `migrate` does, and that
+    // runs at start-up with the real value.
+    url: process.env.DATABASE_URL ?? "postgresql://unset:unset@localhost:5432/unset",
   },
   migrations: {
     path: "prisma/migrations",
