@@ -23,6 +23,36 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
+ * Model Invoice
+ * A hosted payment link. Spawns a Payment when the customer opens it.
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model Payment
+ * A single deposit intent: customer sends USDT to payAddress.
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model IpnDelivery
+ * 
+ */
+export type IpnDelivery = Prisma.IpnDeliveryModel
+/**
+ * Model PaymentEvent
+ * 
+ */
+export type PaymentEvent = Prisma.PaymentEventModel
+/**
+ * Model LedgerEntry
+ * Double-entry-ish ledger of merchant USDT balance movements.
+ */
+export type LedgerEntry = Prisma.LedgerEntryModel
+/**
+ * Model PlatformSetting
+ * Admin-editable platform configuration.
+ */
+export type PlatformSetting = Prisma.PlatformSettingModel
+/**
  * Model KycProfile
  * 
  */

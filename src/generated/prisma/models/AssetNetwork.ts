@@ -282,6 +282,7 @@ export type AssetNetworkWhereInput = {
   enabled?: Prisma.BoolFilter<"AssetNetwork"> | boolean
   asset?: Prisma.XOR<Prisma.AssetScalarRelationFilter, Prisma.AssetWhereInput>
   orders?: Prisma.SellOrderListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type AssetNetworkOrderByWithRelationInput = {
@@ -299,6 +300,7 @@ export type AssetNetworkOrderByWithRelationInput = {
   enabled?: Prisma.SortOrder
   asset?: Prisma.AssetOrderByWithRelationInput
   orders?: Prisma.SellOrderOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type AssetNetworkWhereUniqueInput = Prisma.AtLeast<{
@@ -320,6 +322,7 @@ export type AssetNetworkWhereUniqueInput = Prisma.AtLeast<{
   enabled?: Prisma.BoolFilter<"AssetNetwork"> | boolean
   asset?: Prisma.XOR<Prisma.AssetScalarRelationFilter, Prisma.AssetWhereInput>
   orders?: Prisma.SellOrderListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }, "id" | "assetId_code">
 
 export type AssetNetworkOrderByWithAggregationInput = {
@@ -374,6 +377,7 @@ export type AssetNetworkCreateInput = {
   enabled?: boolean
   asset: Prisma.AssetCreateNestedOneWithoutNetworksInput
   orders?: Prisma.SellOrderCreateNestedManyWithoutNetworkInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutNetworkInput
 }
 
 export type AssetNetworkUncheckedCreateInput = {
@@ -390,6 +394,7 @@ export type AssetNetworkUncheckedCreateInput = {
   sortOrder?: number
   enabled?: boolean
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutNetworkInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutNetworkInput
 }
 
 export type AssetNetworkUpdateInput = {
@@ -406,6 +411,7 @@ export type AssetNetworkUpdateInput = {
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   asset?: Prisma.AssetUpdateOneRequiredWithoutNetworksNestedInput
   orders?: Prisma.SellOrderUpdateManyWithoutNetworkNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutNetworkNestedInput
 }
 
 export type AssetNetworkUncheckedUpdateInput = {
@@ -422,6 +428,7 @@ export type AssetNetworkUncheckedUpdateInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutNetworkNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutNetworkNestedInput
 }
 
 export type AssetNetworkCreateManyInput = {
@@ -466,6 +473,11 @@ export type AssetNetworkUncheckedUpdateManyInput = {
   recommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type AssetNetworkScalarRelationFilter = {
+  is?: Prisma.AssetNetworkWhereInput
+  isNot?: Prisma.AssetNetworkWhereInput
 }
 
 export type AssetNetworkListRelationFilter = {
@@ -545,6 +557,20 @@ export type AssetNetworkNullableScalarRelationFilter = {
   isNot?: Prisma.AssetNetworkWhereInput | null
 }
 
+export type AssetNetworkCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.AssetNetworkCreateWithoutPaymentsInput, Prisma.AssetNetworkUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.AssetNetworkCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.AssetNetworkWhereUniqueInput
+}
+
+export type AssetNetworkUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AssetNetworkCreateWithoutPaymentsInput, Prisma.AssetNetworkUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.AssetNetworkCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.AssetNetworkUpsertWithoutPaymentsInput
+  connect?: Prisma.AssetNetworkWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AssetNetworkUpdateToOneWithWhereWithoutPaymentsInput, Prisma.AssetNetworkUpdateWithoutPaymentsInput>, Prisma.AssetNetworkUncheckedUpdateWithoutPaymentsInput>
+}
+
 export type AssetNetworkCreateNestedManyWithoutAssetInput = {
   create?: Prisma.XOR<Prisma.AssetNetworkCreateWithoutAssetInput, Prisma.AssetNetworkUncheckedCreateWithoutAssetInput> | Prisma.AssetNetworkCreateWithoutAssetInput[] | Prisma.AssetNetworkUncheckedCreateWithoutAssetInput[]
   connectOrCreate?: Prisma.AssetNetworkCreateOrConnectWithoutAssetInput | Prisma.AssetNetworkCreateOrConnectWithoutAssetInput[]
@@ -603,6 +629,86 @@ export type AssetNetworkUpdateOneWithoutOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AssetNetworkUpdateToOneWithWhereWithoutOrdersInput, Prisma.AssetNetworkUpdateWithoutOrdersInput>, Prisma.AssetNetworkUncheckedUpdateWithoutOrdersInput>
 }
 
+export type AssetNetworkCreateWithoutPaymentsInput = {
+  id?: string
+  code: string
+  name: string
+  addressFamily: string
+  confirmationsRequired?: number
+  avgSettleMinutes?: number
+  feeNote?: string | null
+  depositAddress?: string | null
+  recommended?: boolean
+  sortOrder?: number
+  enabled?: boolean
+  asset: Prisma.AssetCreateNestedOneWithoutNetworksInput
+  orders?: Prisma.SellOrderCreateNestedManyWithoutNetworkInput
+}
+
+export type AssetNetworkUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  assetId: string
+  code: string
+  name: string
+  addressFamily: string
+  confirmationsRequired?: number
+  avgSettleMinutes?: number
+  feeNote?: string | null
+  depositAddress?: string | null
+  recommended?: boolean
+  sortOrder?: number
+  enabled?: boolean
+  orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutNetworkInput
+}
+
+export type AssetNetworkCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.AssetNetworkWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssetNetworkCreateWithoutPaymentsInput, Prisma.AssetNetworkUncheckedCreateWithoutPaymentsInput>
+}
+
+export type AssetNetworkUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.AssetNetworkUpdateWithoutPaymentsInput, Prisma.AssetNetworkUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.AssetNetworkCreateWithoutPaymentsInput, Prisma.AssetNetworkUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.AssetNetworkWhereInput
+}
+
+export type AssetNetworkUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.AssetNetworkWhereInput
+  data: Prisma.XOR<Prisma.AssetNetworkUpdateWithoutPaymentsInput, Prisma.AssetNetworkUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type AssetNetworkUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressFamily?: Prisma.StringFieldUpdateOperationsInput | string
+  confirmationsRequired?: Prisma.IntFieldUpdateOperationsInput | number
+  avgSettleMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  feeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  asset?: Prisma.AssetUpdateOneRequiredWithoutNetworksNestedInput
+  orders?: Prisma.SellOrderUpdateManyWithoutNetworkNestedInput
+}
+
+export type AssetNetworkUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assetId?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  addressFamily?: Prisma.StringFieldUpdateOperationsInput | string
+  confirmationsRequired?: Prisma.IntFieldUpdateOperationsInput | number
+  avgSettleMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  feeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  depositAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  orders?: Prisma.SellOrderUncheckedUpdateManyWithoutNetworkNestedInput
+}
+
 export type AssetNetworkCreateWithoutAssetInput = {
   id?: string
   code: string
@@ -616,6 +722,7 @@ export type AssetNetworkCreateWithoutAssetInput = {
   sortOrder?: number
   enabled?: boolean
   orders?: Prisma.SellOrderCreateNestedManyWithoutNetworkInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutNetworkInput
 }
 
 export type AssetNetworkUncheckedCreateWithoutAssetInput = {
@@ -631,6 +738,7 @@ export type AssetNetworkUncheckedCreateWithoutAssetInput = {
   sortOrder?: number
   enabled?: boolean
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutNetworkInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutNetworkInput
 }
 
 export type AssetNetworkCreateOrConnectWithoutAssetInput = {
@@ -690,6 +798,7 @@ export type AssetNetworkCreateWithoutOrdersInput = {
   sortOrder?: number
   enabled?: boolean
   asset: Prisma.AssetCreateNestedOneWithoutNetworksInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutNetworkInput
 }
 
 export type AssetNetworkUncheckedCreateWithoutOrdersInput = {
@@ -705,6 +814,7 @@ export type AssetNetworkUncheckedCreateWithoutOrdersInput = {
   recommended?: boolean
   sortOrder?: number
   enabled?: boolean
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutNetworkInput
 }
 
 export type AssetNetworkCreateOrConnectWithoutOrdersInput = {
@@ -736,6 +846,7 @@ export type AssetNetworkUpdateWithoutOrdersInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   asset?: Prisma.AssetUpdateOneRequiredWithoutNetworksNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutNetworkNestedInput
 }
 
 export type AssetNetworkUncheckedUpdateWithoutOrdersInput = {
@@ -751,6 +862,7 @@ export type AssetNetworkUncheckedUpdateWithoutOrdersInput = {
   recommended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutNetworkNestedInput
 }
 
 export type AssetNetworkCreateManyAssetInput = {
@@ -780,6 +892,7 @@ export type AssetNetworkUpdateWithoutAssetInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.SellOrderUpdateManyWithoutNetworkNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutNetworkNestedInput
 }
 
 export type AssetNetworkUncheckedUpdateWithoutAssetInput = {
@@ -795,6 +908,7 @@ export type AssetNetworkUncheckedUpdateWithoutAssetInput = {
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   enabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutNetworkNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutNetworkNestedInput
 }
 
 export type AssetNetworkUncheckedUpdateManyWithoutAssetInput = {
@@ -818,10 +932,12 @@ export type AssetNetworkUncheckedUpdateManyWithoutAssetInput = {
 
 export type AssetNetworkCountOutputType = {
   orders: number
+  payments: number
 }
 
 export type AssetNetworkCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   orders?: boolean | AssetNetworkCountOutputTypeCountOrdersArgs
+  payments?: boolean | AssetNetworkCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -841,6 +957,13 @@ export type AssetNetworkCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.T
   where?: Prisma.SellOrderWhereInput
 }
 
+/**
+ * AssetNetworkCountOutputType without action
+ */
+export type AssetNetworkCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
 
 export type AssetNetworkSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -857,6 +980,7 @@ export type AssetNetworkSelect<ExtArgs extends runtime.Types.Extensions.Internal
   enabled?: boolean
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   orders?: boolean | Prisma.AssetNetwork$ordersArgs<ExtArgs>
+  payments?: boolean | Prisma.AssetNetwork$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.AssetNetworkCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["assetNetwork"]>
 
@@ -911,6 +1035,7 @@ export type AssetNetworkOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type AssetNetworkInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   orders?: boolean | Prisma.AssetNetwork$ordersArgs<ExtArgs>
+  payments?: boolean | Prisma.AssetNetwork$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.AssetNetworkCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AssetNetworkIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -925,6 +1050,7 @@ export type $AssetNetworkPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     asset: Prisma.$AssetPayload<ExtArgs>
     orders: Prisma.$SellOrderPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1335,6 +1461,7 @@ export interface Prisma__AssetNetworkClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   asset<T extends Prisma.AssetDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetDefaultArgs<ExtArgs>>): Prisma.Prisma__AssetClient<runtime.Types.Result.GetResult<Prisma.$AssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   orders<T extends Prisma.AssetNetwork$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetNetwork$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SellOrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.AssetNetwork$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetNetwork$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1798,6 +1925,30 @@ export type AssetNetwork$ordersArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.SellOrderScalarFieldEnum | Prisma.SellOrderScalarFieldEnum[]
+}
+
+/**
+ * AssetNetwork.payments
+ */
+export type AssetNetwork$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

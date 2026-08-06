@@ -34,6 +34,9 @@ export type UserMinAggregateOutputType = {
   kycStatus: $Enums.KycStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  businessName: string | null
+  ipnSecret: string | null
+  brandColor: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -46,6 +49,9 @@ export type UserMaxAggregateOutputType = {
   kycStatus: $Enums.KycStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  businessName: string | null
+  ipnSecret: string | null
+  brandColor: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -58,6 +64,9 @@ export type UserCountAggregateOutputType = {
   kycStatus: number
   createdAt: number
   updatedAt: number
+  businessName: number
+  ipnSecret: number
+  brandColor: number
   _all: number
 }
 
@@ -72,6 +81,9 @@ export type UserMinAggregateInputType = {
   kycStatus?: true
   createdAt?: true
   updatedAt?: true
+  businessName?: true
+  ipnSecret?: true
+  brandColor?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -84,6 +96,9 @@ export type UserMaxAggregateInputType = {
   kycStatus?: true
   createdAt?: true
   updatedAt?: true
+  businessName?: true
+  ipnSecret?: true
+  brandColor?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -96,6 +111,9 @@ export type UserCountAggregateInputType = {
   kycStatus?: true
   createdAt?: true
   updatedAt?: true
+  businessName?: true
+  ipnSecret?: true
+  brandColor?: true
   _all?: true
 }
 
@@ -181,6 +199,9 @@ export type UserGroupByOutputType = {
   kycStatus: $Enums.KycStatus
   createdAt: Date
   updatedAt: Date
+  businessName: string | null
+  ipnSecret: string | null
+  brandColor: string | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -214,12 +235,18 @@ export type UserWhereInput = {
   kycStatus?: Prisma.EnumKycStatusFilter<"User"> | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  businessName?: Prisma.StringNullableFilter<"User"> | string | null
+  ipnSecret?: Prisma.StringNullableFilter<"User"> | string | null
+  brandColor?: Prisma.StringNullableFilter<"User"> | string | null
   kycProfile?: Prisma.XOR<Prisma.KycProfileNullableScalarRelationFilter, Prisma.KycProfileWhereInput> | null
   bankAccounts?: Prisma.BankAccountListRelationFilter
   orders?: Prisma.SellOrderListRelationFilter
   apiKeys?: Prisma.ApiKeyListRelationFilter
   webhooks?: Prisma.WebhookEndpointListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  ledger?: Prisma.LedgerEntryListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -232,12 +259,18 @@ export type UserOrderByWithRelationInput = {
   kycStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
+  ipnSecret?: Prisma.SortOrderInput | Prisma.SortOrder
+  brandColor?: Prisma.SortOrderInput | Prisma.SortOrder
   kycProfile?: Prisma.KycProfileOrderByWithRelationInput
   bankAccounts?: Prisma.BankAccountOrderByRelationAggregateInput
   orders?: Prisma.SellOrderOrderByRelationAggregateInput
   apiKeys?: Prisma.ApiKeyOrderByRelationAggregateInput
   webhooks?: Prisma.WebhookEndpointOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
+  invoices?: Prisma.InvoiceOrderByRelationAggregateInput
+  ledger?: Prisma.LedgerEntryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -253,12 +286,18 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   kycStatus?: Prisma.EnumKycStatusFilter<"User"> | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  businessName?: Prisma.StringNullableFilter<"User"> | string | null
+  ipnSecret?: Prisma.StringNullableFilter<"User"> | string | null
+  brandColor?: Prisma.StringNullableFilter<"User"> | string | null
   kycProfile?: Prisma.XOR<Prisma.KycProfileNullableScalarRelationFilter, Prisma.KycProfileWhereInput> | null
   bankAccounts?: Prisma.BankAccountListRelationFilter
   orders?: Prisma.SellOrderListRelationFilter
   apiKeys?: Prisma.ApiKeyListRelationFilter
   webhooks?: Prisma.WebhookEndpointListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
+  invoices?: Prisma.InvoiceListRelationFilter
+  ledger?: Prisma.LedgerEntryListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -271,6 +310,9 @@ export type UserOrderByWithAggregationInput = {
   kycStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  businessName?: Prisma.SortOrderInput | Prisma.SortOrder
+  ipnSecret?: Prisma.SortOrderInput | Prisma.SortOrder
+  brandColor?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -289,6 +331,9 @@ export type UserScalarWhereWithAggregatesInput = {
   kycStatus?: Prisma.EnumKycStatusWithAggregatesFilter<"User"> | $Enums.KycStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  businessName?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  ipnSecret?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  brandColor?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
 }
 
 export type UserCreateInput = {
@@ -301,12 +346,18 @@ export type UserCreateInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -319,12 +370,18 @@ export type UserUncheckedCreateInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUpdateInput = {
@@ -337,12 +394,18 @@ export type UserUpdateInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -355,12 +418,18 @@ export type UserUncheckedUpdateInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -373,6 +442,9 @@ export type UserCreateManyInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -385,6 +457,9 @@ export type UserUpdateManyMutationInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -397,6 +472,9 @@ export type UserUncheckedUpdateManyInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -409,6 +487,9 @@ export type UserCountOrderByAggregateInput = {
   kycStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  businessName?: Prisma.SortOrder
+  ipnSecret?: Prisma.SortOrder
+  brandColor?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -421,6 +502,9 @@ export type UserMaxOrderByAggregateInput = {
   kycStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  businessName?: Prisma.SortOrder
+  ipnSecret?: Prisma.SortOrder
+  brandColor?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -433,6 +517,9 @@ export type UserMinOrderByAggregateInput = {
   kycStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  businessName?: Prisma.SortOrder
+  ipnSecret?: Prisma.SortOrder
+  brandColor?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -463,6 +550,48 @@ export type EnumKycStatusFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.UserUpsertWithoutInvoicesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvoicesInput, Prisma.UserUpdateWithoutInvoicesInput>, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type UserCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.UserUpsertWithoutPaymentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaymentsInput, Prisma.UserUpdateWithoutPaymentsInput>, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type UserCreateNestedOneWithoutLedgerInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLedgerInput, Prisma.UserUncheckedCreateWithoutLedgerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLedgerInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutLedgerNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutLedgerInput, Prisma.UserUncheckedCreateWithoutLedgerInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutLedgerInput
+  upsert?: Prisma.UserUpsertWithoutLedgerInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLedgerInput, Prisma.UserUpdateWithoutLedgerInput>, Prisma.UserUncheckedUpdateWithoutLedgerInput>
 }
 
 export type UserCreateNestedOneWithoutKycProfileInput = {
@@ -551,6 +680,330 @@ export type UserUpdateOneWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateWithoutInvoicesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.Role
+  kycStatus?: $Enums.KycStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
+  kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
+  bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
+  orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
+}
+
+export type UserUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.Role
+  kycStatus?: $Enums.KycStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
+  kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
+  bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type UserCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+}
+
+export type UserUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInvoicesInput, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvoicesInput, Prisma.UserUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInvoicesInput, Prisma.UserUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type UserUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
+  bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
+  orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
+  bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
+export type UserCreateWithoutPaymentsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.Role
+  kycStatus?: $Enums.KycStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
+  kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
+  bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
+  orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
+}
+
+export type UserUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.Role
+  kycStatus?: $Enums.KycStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
+  kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
+  bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type UserCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+}
+
+export type UserUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaymentsInput, Prisma.UserUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaymentsInput, Prisma.UserUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type UserUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
+  bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
+  orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
+  bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
+export type UserCreateWithoutLedgerInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.Role
+  kycStatus?: $Enums.KycStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
+  kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
+  bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
+  orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+}
+
+export type UserUncheckedCreateWithoutLedgerInput = {
+  id?: string
+  email: string
+  passwordHash: string
+  fullName: string
+  phone?: string | null
+  role?: $Enums.Role
+  kycStatus?: $Enums.KycStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
+  kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
+  bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
+  apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
+  webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+}
+
+export type UserCreateOrConnectWithoutLedgerInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutLedgerInput, Prisma.UserUncheckedCreateWithoutLedgerInput>
+}
+
+export type UserUpsertWithoutLedgerInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutLedgerInput, Prisma.UserUncheckedUpdateWithoutLedgerInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutLedgerInput, Prisma.UserUncheckedCreateWithoutLedgerInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutLedgerInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutLedgerInput, Prisma.UserUncheckedUpdateWithoutLedgerInput>
+}
+
+export type UserUpdateWithoutLedgerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
+  bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
+  orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+}
+
+export type UserUncheckedUpdateWithoutLedgerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
+  bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
+  apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+  webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+}
+
 export type UserCreateWithoutKycProfileInput = {
   id?: string
   email: string
@@ -561,11 +1014,17 @@ export type UserCreateWithoutKycProfileInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUncheckedCreateWithoutKycProfileInput = {
@@ -578,11 +1037,17 @@ export type UserUncheckedCreateWithoutKycProfileInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type UserCreateOrConnectWithoutKycProfileInput = {
@@ -611,11 +1076,17 @@ export type UserUpdateWithoutKycProfileInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserUncheckedUpdateWithoutKycProfileInput = {
@@ -628,11 +1099,17 @@ export type UserUncheckedUpdateWithoutKycProfileInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserCreateWithoutBankAccountsInput = {
@@ -645,11 +1122,17 @@ export type UserCreateWithoutBankAccountsInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
   orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUncheckedCreateWithoutBankAccountsInput = {
@@ -662,11 +1145,17 @@ export type UserUncheckedCreateWithoutBankAccountsInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type UserCreateOrConnectWithoutBankAccountsInput = {
@@ -695,11 +1184,17 @@ export type UserUpdateWithoutBankAccountsInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
   orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBankAccountsInput = {
@@ -712,11 +1207,17 @@ export type UserUncheckedUpdateWithoutBankAccountsInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -729,11 +1230,17 @@ export type UserCreateWithoutOrdersInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -746,11 +1253,17 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -779,11 +1292,17 @@ export type UserUpdateWithoutOrdersInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -796,11 +1315,17 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserCreateWithoutApiKeysInput = {
@@ -813,11 +1338,17 @@ export type UserCreateWithoutApiKeysInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -830,11 +1361,17 @@ export type UserUncheckedCreateWithoutApiKeysInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -863,11 +1400,17 @@ export type UserUpdateWithoutApiKeysInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -880,11 +1423,17 @@ export type UserUncheckedUpdateWithoutApiKeysInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserCreateWithoutWebhooksInput = {
@@ -897,11 +1446,17 @@ export type UserCreateWithoutWebhooksInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUncheckedCreateWithoutWebhooksInput = {
@@ -914,11 +1469,17 @@ export type UserUncheckedCreateWithoutWebhooksInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type UserCreateOrConnectWithoutWebhooksInput = {
@@ -947,11 +1508,17 @@ export type UserUpdateWithoutWebhooksInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserUncheckedUpdateWithoutWebhooksInput = {
@@ -964,11 +1531,17 @@ export type UserUncheckedUpdateWithoutWebhooksInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -981,11 +1554,17 @@ export type UserCreateWithoutAuditLogsInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryCreateNestedManyWithoutMerchantInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -998,11 +1577,17 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   kycStatus?: $Enums.KycStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  businessName?: string | null
+  ipnSecret?: string | null
+  brandColor?: string | null
   kycProfile?: Prisma.KycProfileUncheckedCreateNestedOneWithoutUserInput
   bankAccounts?: Prisma.BankAccountUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.SellOrderUncheckedCreateNestedManyWithoutUserInput
   apiKeys?: Prisma.ApiKeyUncheckedCreateNestedManyWithoutUserInput
   webhooks?: Prisma.WebhookEndpointUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutMerchantInput
+  invoices?: Prisma.InvoiceUncheckedCreateNestedManyWithoutMerchantInput
+  ledger?: Prisma.LedgerEntryUncheckedCreateNestedManyWithoutMerchantInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -1031,11 +1616,17 @@ export type UserUpdateWithoutAuditLogsInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUpdateManyWithoutMerchantNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -1048,11 +1639,17 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   kycStatus?: Prisma.EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  businessName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ipnSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  brandColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kycProfile?: Prisma.KycProfileUncheckedUpdateOneWithoutUserNestedInput
   bankAccounts?: Prisma.BankAccountUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.SellOrderUncheckedUpdateManyWithoutUserNestedInput
   apiKeys?: Prisma.ApiKeyUncheckedUpdateManyWithoutUserNestedInput
   webhooks?: Prisma.WebhookEndpointUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutMerchantNestedInput
+  invoices?: Prisma.InvoiceUncheckedUpdateManyWithoutMerchantNestedInput
+  ledger?: Prisma.LedgerEntryUncheckedUpdateManyWithoutMerchantNestedInput
 }
 
 
@@ -1066,6 +1663,9 @@ export type UserCountOutputType = {
   apiKeys: number
   webhooks: number
   auditLogs: number
+  payments: number
+  invoices: number
+  ledger: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1074,6 +1674,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
   webhooks?: boolean | UserCountOutputTypeCountWebhooksArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  payments?: boolean | UserCountOutputTypeCountPaymentsArgs
+  invoices?: boolean | UserCountOutputTypeCountInvoicesArgs
+  ledger?: boolean | UserCountOutputTypeCountLedgerArgs
 }
 
 /**
@@ -1121,6 +1724,27 @@ export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.AuditLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvoiceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountLedgerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LedgerEntryWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1132,12 +1756,18 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   kycStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  businessName?: boolean
+  ipnSecret?: boolean
+  brandColor?: boolean
   kycProfile?: boolean | Prisma.User$kycProfileArgs<ExtArgs>
   bankAccounts?: boolean | Prisma.User$bankAccountsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   apiKeys?: boolean | Prisma.User$apiKeysArgs<ExtArgs>
   webhooks?: boolean | Prisma.User$webhooksArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
+  invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  ledger?: boolean | Prisma.User$ledgerArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1151,6 +1781,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   kycStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  businessName?: boolean
+  ipnSecret?: boolean
+  brandColor?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1163,6 +1796,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   kycStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  businessName?: boolean
+  ipnSecret?: boolean
+  brandColor?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1175,9 +1811,12 @@ export type UserSelectScalar = {
   kycStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  businessName?: boolean
+  ipnSecret?: boolean
+  brandColor?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "fullName" | "phone" | "role" | "kycStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "fullName" | "phone" | "role" | "kycStatus" | "createdAt" | "updatedAt" | "businessName" | "ipnSecret" | "brandColor", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   kycProfile?: boolean | Prisma.User$kycProfileArgs<ExtArgs>
   bankAccounts?: boolean | Prisma.User$bankAccountsArgs<ExtArgs>
@@ -1185,6 +1824,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   apiKeys?: boolean | Prisma.User$apiKeysArgs<ExtArgs>
   webhooks?: boolean | Prisma.User$webhooksArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  payments?: boolean | Prisma.User$paymentsArgs<ExtArgs>
+  invoices?: boolean | Prisma.User$invoicesArgs<ExtArgs>
+  ledger?: boolean | Prisma.User$ledgerArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1199,6 +1841,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
     webhooks: Prisma.$WebhookEndpointPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
+    invoices: Prisma.$InvoicePayload<ExtArgs>[]
+    ledger: Prisma.$LedgerEntryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1210,6 +1855,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     kycStatus: $Enums.KycStatus
     createdAt: Date
     updatedAt: Date
+    businessName: string | null
+    ipnSecret: string | null
+    brandColor: string | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1610,6 +2258,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   apiKeys<T extends Prisma.User$apiKeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   webhooks<T extends Prisma.User$webhooksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$webhooksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WebhookEndpointPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.User$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.User$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ledger<T extends Prisma.User$ledgerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ledgerArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LedgerEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1648,6 +2299,9 @@ export interface UserFieldRefs {
   readonly kycStatus: Prisma.FieldRef<"User", 'KycStatus'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly businessName: Prisma.FieldRef<"User", 'String'>
+  readonly ipnSecret: Prisma.FieldRef<"User", 'String'>
+  readonly brandColor: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -2177,6 +2831,78 @@ export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.payments
+ */
+export type User$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
+}
+
+/**
+ * User.invoices
+ */
+export type User$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invoice
+   */
+  select?: Prisma.InvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invoice
+   */
+  omit?: Prisma.InvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvoiceInclude<ExtArgs> | null
+  where?: Prisma.InvoiceWhereInput
+  orderBy?: Prisma.InvoiceOrderByWithRelationInput | Prisma.InvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.InvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvoiceScalarFieldEnum | Prisma.InvoiceScalarFieldEnum[]
+}
+
+/**
+ * User.ledger
+ */
+export type User$ledgerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LedgerEntry
+   */
+  select?: Prisma.LedgerEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LedgerEntry
+   */
+  omit?: Prisma.LedgerEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LedgerEntryInclude<ExtArgs> | null
+  where?: Prisma.LedgerEntryWhereInput
+  orderBy?: Prisma.LedgerEntryOrderByWithRelationInput | Prisma.LedgerEntryOrderByWithRelationInput[]
+  cursor?: Prisma.LedgerEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LedgerEntryScalarFieldEnum | Prisma.LedgerEntryScalarFieldEnum[]
 }
 
 /**

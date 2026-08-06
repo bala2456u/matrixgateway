@@ -37,6 +37,26 @@ enum PayoutStatus {
   FAILED
 }
 
+/// Merchant payment lifecycle (mirrors the industry-standard gateway model).
+enum PaymentStatus {
+  WAITING        // created, awaiting the customer's transfer
+  CONFIRMING     // seen on-chain, accumulating confirmations
+  CONFIRMED      // enough confirmations
+  SENDING        // crediting the merchant
+  PARTIALLY_PAID // customer underpaid
+  FINISHED       // complete
+  FAILED
+  REFUNDED
+  EXPIRED
+}
+
+enum LedgerType {
+  PAYMENT_CREDIT
+  SERVICE_FEE
+  PAYOUT_DEBIT
+  ADJUSTMENT
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -48,12 +68,144 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  // Merchant profile
+  businessName String?
+  ipnSecret    String?  // HMAC-SHA512 secret for IPN callbacks
+  brandColor   String?  @default("#10b981")
+
   kycProfile   KycProfile?
   bankAccounts BankAccount[]
   orders       SellOrder[]
   apiKeys      ApiKey[]
   webhooks     WebhookEndpoint[]
   auditLogs    AuditLog[]
+  payments     Payment[]
+  invoices     Invoice[]
+  ledger       LedgerEntry[]
+}
+
+/// A hosted payment link. Spawns a Payment when the customer opens it.
+model Invoice {
+  id              String   @id @default(cuid())
+  token           String   @unique // public id used in the hosted URL
+  merchantId      String
+  merchant        User     @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  priceAmount     Decimal  @db.Decimal(18, 2)
+  priceCurrency   String   @default("INR")
+  payCurrency     String   @default("USDT")
+
+  orderId         String?
+  orderDescription String?
+  ipnCallbackUrl  String?
+  successUrl      String?
+  cancelUrl       String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  payments        Payment[]
+
+  @@index([merchantId, createdAt])
+}
+
+/// A single deposit intent: customer sends USDT to payAddress.
+model Payment {
+  id              String        @id @default(cuid())
+  paymentId       String        @unique // public numeric id, gateway-style
+  merchantId      String
+  merchant        User          @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  invoiceId       String?
+  invoice         Invoice?      @relation(fields: [invoiceId], references: [id])
+
+  priceAmount     Decimal       @db.Decimal(18, 2)
+  priceCurrency   String        @default("INR")
+  payCurrency     String        @default("USDT")
+  payAmount       Decimal       @db.Decimal(28, 10)
+  actuallyPaid    Decimal       @default(0) @db.Decimal(28, 10)
+  lockedRateInr   Decimal       @db.Decimal(18, 4)
+
+  networkId       String
+  network         AssetNetwork  @relation(fields: [networkId], references: [id])
+  payAddress      String
+
+  serviceFee      Decimal       @default(0) @db.Decimal(28, 10) // in USDT
+  outcomeAmount   Decimal       @default(0) @db.Decimal(28, 10) // credited to merchant
+
+  status          PaymentStatus @default(WAITING)
+  txHash          String?
+  confirmations   Int           @default(0)
+
+  orderId         String?
+  orderDescription String?
+  purchaseId      String?
+  ipnCallbackUrl  String?
+  successUrl      String?
+  cancelUrl       String?
+
+  createdViaApiKeyId String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  expiresAt       DateTime
+  paidAt          DateTime?
+
+  events          PaymentEvent[]
+  ledger          LedgerEntry[]
+  ipnDeliveries   IpnDelivery[]
+
+  @@index([merchantId, createdAt])
+  @@index([status])
+  @@index([txHash])
+}
+
+model IpnDelivery {
+  id          String    @id @default(cuid())
+  paymentId   String
+  payment     Payment   @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  url         String
+  eventType   String
+  payload     Json
+  statusCode  Int?
+  success     Boolean   @default(false)
+  attempts    Int       @default(0)
+  lastAttempt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([success, attempts])
+  @@index([paymentId, createdAt])
+}
+
+model PaymentEvent {
+  id        String        @id @default(cuid())
+  paymentId String
+  payment   Payment       @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  status    PaymentStatus
+  message   String
+  createdAt DateTime      @default(now())
+
+  @@index([paymentId, createdAt])
+}
+
+/// Double-entry-ish ledger of merchant USDT balance movements.
+model LedgerEntry {
+  id         String     @id @default(cuid())
+  merchantId String
+  merchant   User       @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  paymentId  String?
+  payment    Payment?   @relation(fields: [paymentId], references: [id])
+  type       LedgerType
+  amount     Decimal    @db.Decimal(28, 10) // signed, USDT
+  note       String?
+  createdAt  DateTime   @default(now())
+
+  @@index([merchantId, createdAt])
+}
+
+/// Admin-editable platform configuration.
+model PlatformSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }
 
 model KycProfile {
@@ -119,6 +271,7 @@ model AssetNetwork {
   enabled      Boolean @default(true)
 
   orders       SellOrder[]
+  payments     Payment[]
 
   @@unique([assetId, code])
 }

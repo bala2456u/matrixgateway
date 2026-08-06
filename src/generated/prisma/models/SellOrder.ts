@@ -952,14 +952,6 @@ export type EnumOrderStatusFieldUpdateOperationsInput = {
   set?: $Enums.OrderStatus
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type SellOrderCreateNestedOneWithoutEventsInput = {
   create?: Prisma.XOR<Prisma.SellOrderCreateWithoutEventsInput, Prisma.SellOrderUncheckedCreateWithoutEventsInput>
   connectOrCreate?: Prisma.SellOrderCreateOrConnectWithoutEventsInput

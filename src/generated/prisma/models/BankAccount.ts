@@ -459,10 +459,6 @@ export type BankAccountUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.BankAccountScalarWhereInput | Prisma.BankAccountScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type BankAccountCreateNestedOneWithoutPayoutsInput = {
   create?: Prisma.XOR<Prisma.BankAccountCreateWithoutPayoutsInput, Prisma.BankAccountUncheckedCreateWithoutPayoutsInput>
   connectOrCreate?: Prisma.BankAccountCreateOrConnectWithoutPayoutsInput

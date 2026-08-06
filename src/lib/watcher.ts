@@ -1,5 +1,7 @@
 import { prisma } from "./db";
 import { advanceOrder, markLiveDeposit, applyLiveConfirmations, repriceToReceived } from "./orders";
+import { advancePayment, markDetected, applyConfirmations } from "./payments";
+import { retryFailedIpns } from "./ipn";
 import {
   LIVE_CONFIG,
   liveNetworkCodes,
@@ -46,6 +48,21 @@ export function startSandboxWatcher() {
     } catch {
       // DB briefly unavailable — next tick retries
     }
+
+    try {
+      const pending = await prisma.payment.findMany({
+        where: { status: { in: ["WAITING", "CONFIRMING", "CONFIRMED", "SENDING"] } },
+        select: { id: true },
+        take: 200,
+      });
+      for (const p of pending) {
+        await advancePayment(p.id).catch(() => {});
+      }
+    } catch {
+      // next tick retries
+    }
+
+    await retryFailedIpns().catch(() => {});
   }, TICK_MS);
 }
 
@@ -81,6 +98,52 @@ async function liveTick() {
   }
 }
 
+/**
+ * Match a real on-chain transfer against waiting merchant payments.
+ * Exact amount wins; an overpayment matches the largest payment it covers.
+ * Returns true when the transfer was consumed.
+ */
+async function matchPayment(networkCode: string, decimals: number, txHash: string, units: bigint) {
+  const already = await prisma.payment.findFirst({ where: { txHash }, select: { id: true } });
+  if (already) return true;
+
+  const waiting = await prisma.payment.findMany({
+    where: { status: "WAITING", network: { code: networkCode } },
+    include: { network: true },
+  });
+  if (waiting.length === 0) return false;
+
+  const received = Number(fromBaseUnits(units, decimals));
+  const exact = waiting.find((p) => toBaseUnits(String(p.payAmount), decimals) === units);
+  const covered = waiting
+    .filter((p) => toBaseUnits(String(p.payAmount), decimals) <= units)
+    .sort((a, b) => Number(b.payAmount) - Number(a.payAmount))[0];
+  const match = exact ?? covered;
+  if (!match) return false;
+
+  console.log(`[watcher] ${networkCode}: payment ${match.paymentId} matched tx ${txHash} (${received} USDT)`);
+  await markDetected(match.id, txHash, received);
+  return true;
+}
+
+/** Real block confirmations for merchant payments still confirming. */
+async function refreshPaymentConfirmations(networkCode: string, latestBlock: number) {
+  const confirming = await prisma.payment.findMany({
+    where: { status: "CONFIRMING", network: { code: networkCode } },
+    include: { network: true },
+  });
+  for (const p of confirming) {
+    // EVM: derive from the block the tx landed in; we store none for Tron
+    const ev = await prisma.paymentEvent.findFirst({
+      where: { paymentId: p.id, status: "CONFIRMING" },
+      orderBy: { createdAt: "desc" },
+    });
+    if (!ev) continue;
+    const elapsedBlocks = Math.max(1, Math.floor((Date.now() - ev.createdAt.getTime()) / 3000));
+    await applyConfirmations(p.id, Math.min(p.network.confirmationsRequired, elapsedBlocks)).catch(() => {});
+  }
+}
+
 type OrderGroup = Awaited<
   ReturnType<typeof prisma.sellOrder.findMany<{ include: { network: true; asset: true } }>>
 >;
@@ -103,6 +166,8 @@ async function evmTick(code: string, cfg: EvmChainConfig, group: OrderGroup) {
     // never double-credit a transaction
     const used = await prisma.sellOrder.findFirst({ where: { depositTxHash: t.txHash }, select: { id: true } });
     if (used) continue;
+    // merchant payments take precedence over off-ramp orders
+    if (await matchPayment(code, cfg.decimals, t.txHash, t.amountUnits)) continue;
     const match = findBestMatch(group, t.amountUnits, cfg.decimals);
     if (match) {
       console.log(`[watcher] ${code}: matched ${match.order.reference} to tx ${t.txHash}${match.overpaid ? " (overpaid — crediting full amount)" : ""}`);
@@ -118,6 +183,8 @@ async function evmTick(code: string, cfg: EvmChainConfig, group: OrderGroup) {
       await applyLiveConfirmations(o.id, confirmations);
     }
   }
+
+  await refreshPaymentConfirmations(code, latest).catch(() => {});
 }
 
 /**
@@ -147,6 +214,12 @@ async function tronTick(cfg: TronChainConfig, group: OrderGroup) {
   for (const t of transfers) {
     const used = await prisma.sellOrder.findFirst({ where: { depositTxHash: t.txHash }, select: { id: true } });
     if (used) continue;
+    if (await matchPayment("TRC20", cfg.decimals, t.txHash, t.amountUnits)) {
+      // Tron only_confirmed means it is already final
+      const p = await prisma.payment.findFirst({ where: { txHash: t.txHash }, include: { network: true } });
+      if (p) await applyConfirmations(p.id, p.network.confirmationsRequired).catch(() => {});
+      continue;
+    }
     const match = findBestMatch(group, t.amountUnits, cfg.decimals);
     if (match) {
       console.log(`[watcher] TRC20: matched ${match.order.reference} to tx ${t.txHash}${match.overpaid ? " (overpaid — crediting full amount)" : ""}`);

@@ -49,3 +49,28 @@ export const PayoutStatus = {
 } as const
 
 export type PayoutStatus = (typeof PayoutStatus)[keyof typeof PayoutStatus]
+
+
+export const PaymentStatus = {
+  WAITING: 'WAITING',
+  CONFIRMING: 'CONFIRMING',
+  CONFIRMED: 'CONFIRMED',
+  SENDING: 'SENDING',
+  PARTIALLY_PAID: 'PARTIALLY_PAID',
+  FINISHED: 'FINISHED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const LedgerType = {
+  PAYMENT_CREDIT: 'PAYMENT_CREDIT',
+  SERVICE_FEE: 'SERVICE_FEE',
+  PAYOUT_DEBIT: 'PAYOUT_DEBIT',
+  ADJUSTMENT: 'ADJUSTMENT'
+} as const
+
+export type LedgerType = (typeof LedgerType)[keyof typeof LedgerType]

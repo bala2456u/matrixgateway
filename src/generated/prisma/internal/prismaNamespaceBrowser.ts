@@ -52,6 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  Invoice: 'Invoice',
+  Payment: 'Payment',
+  IpnDelivery: 'IpnDelivery',
+  PaymentEvent: 'PaymentEvent',
+  LedgerEntry: 'LedgerEntry',
+  PlatformSetting: 'PlatformSetting',
   KycProfile: 'KycProfile',
   BankAccount: 'BankAccount',
   Asset: 'Asset',
@@ -90,10 +96,115 @@ export const UserScalarFieldEnum = {
   role: 'role',
   kycStatus: 'kycStatus',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  businessName: 'businessName',
+  ipnSecret: 'ipnSecret',
+  brandColor: 'brandColor'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  merchantId: 'merchantId',
+  priceAmount: 'priceAmount',
+  priceCurrency: 'priceCurrency',
+  payCurrency: 'payCurrency',
+  orderId: 'orderId',
+  orderDescription: 'orderDescription',
+  ipnCallbackUrl: 'ipnCallbackUrl',
+  successUrl: 'successUrl',
+  cancelUrl: 'cancelUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  merchantId: 'merchantId',
+  invoiceId: 'invoiceId',
+  priceAmount: 'priceAmount',
+  priceCurrency: 'priceCurrency',
+  payCurrency: 'payCurrency',
+  payAmount: 'payAmount',
+  actuallyPaid: 'actuallyPaid',
+  lockedRateInr: 'lockedRateInr',
+  networkId: 'networkId',
+  payAddress: 'payAddress',
+  serviceFee: 'serviceFee',
+  outcomeAmount: 'outcomeAmount',
+  status: 'status',
+  txHash: 'txHash',
+  confirmations: 'confirmations',
+  orderId: 'orderId',
+  orderDescription: 'orderDescription',
+  purchaseId: 'purchaseId',
+  ipnCallbackUrl: 'ipnCallbackUrl',
+  successUrl: 'successUrl',
+  cancelUrl: 'cancelUrl',
+  createdViaApiKeyId: 'createdViaApiKeyId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  expiresAt: 'expiresAt',
+  paidAt: 'paidAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const IpnDeliveryScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  url: 'url',
+  eventType: 'eventType',
+  payload: 'payload',
+  statusCode: 'statusCode',
+  success: 'success',
+  attempts: 'attempts',
+  lastAttempt: 'lastAttempt',
+  createdAt: 'createdAt'
+} as const
+
+export type IpnDeliveryScalarFieldEnum = (typeof IpnDeliveryScalarFieldEnum)[keyof typeof IpnDeliveryScalarFieldEnum]
+
+
+export const PaymentEventScalarFieldEnum = {
+  id: 'id',
+  paymentId: 'paymentId',
+  status: 'status',
+  message: 'message',
+  createdAt: 'createdAt'
+} as const
+
+export type PaymentEventScalarFieldEnum = (typeof PaymentEventScalarFieldEnum)[keyof typeof PaymentEventScalarFieldEnum]
+
+
+export const LedgerEntryScalarFieldEnum = {
+  id: 'id',
+  merchantId: 'merchantId',
+  paymentId: 'paymentId',
+  type: 'type',
+  amount: 'amount',
+  note: 'note',
+  createdAt: 'createdAt'
+} as const
+
+export type LedgerEntryScalarFieldEnum = (typeof LedgerEntryScalarFieldEnum)[keyof typeof LedgerEntryScalarFieldEnum]
+
+
+export const PlatformSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PlatformSettingScalarFieldEnum = (typeof PlatformSettingScalarFieldEnum)[keyof typeof PlatformSettingScalarFieldEnum]
 
 
 export const KycProfileScalarFieldEnum = {

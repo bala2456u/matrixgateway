@@ -520,10 +520,6 @@ export type KycProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.KycProfileUpdateToOneWithWhereWithoutUserInput, Prisma.KycProfileUpdateWithoutUserInput>, Prisma.KycProfileUncheckedUpdateWithoutUserInput>
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type KycProfileCreateWithoutUserInput = {
   id?: string
   panNumber: string
