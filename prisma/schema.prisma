@@ -1,0 +1,238 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum KycStatus {
+  NOT_SUBMITTED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum OrderStatus {
+  QUOTE
+  AWAITING_DEPOSIT
+  DEPOSIT_DETECTED
+  DEPOSIT_CONFIRMED
+  PAYOUT_PROCESSING
+  COMPLETED
+  EXPIRED
+  FAILED
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  phone        String?
+  role         Role     @default(CUSTOMER)
+  kycStatus    KycStatus @default(NOT_SUBMITTED)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  kycProfile   KycProfile?
+  bankAccounts BankAccount[]
+  orders       SellOrder[]
+  apiKeys      ApiKey[]
+  webhooks     WebhookEndpoint[]
+  auditLogs    AuditLog[]
+}
+
+model KycProfile {
+  id            String    @id @default(cuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  panNumber     String
+  aadhaarLast4  String
+  dateOfBirth   DateTime
+  addressLine   String
+  city          String
+  state         String
+  pincode       String
+  status        KycStatus @default(PENDING)
+  rejectReason  String?
+  reviewedAt    DateTime?
+  submittedAt   DateTime  @default(now())
+}
+
+model BankAccount {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountHolder String
+  accountNumber String
+  ifsc          String
+  bankName      String
+  upiId         String?
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  payouts       Payout[]
+}
+
+model Asset {
+  id           String  @id @default(cuid())
+  symbol       String  @unique // USDT, BTC, ETH, SOL
+  name         String
+  coingeckoId  String
+  decimals     Int     @default(8)
+  minSellAmount Decimal @db.Decimal(28, 10)
+  sortOrder    Int     @default(100) // USDT first
+  featured     Boolean @default(false)
+  enabled      Boolean @default(true)
+
+  networks     AssetNetwork[]
+  orders       SellOrder[]
+}
+
+model AssetNetwork {
+  id           String  @id @default(cuid())
+  assetId      String
+  asset        Asset   @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  code         String  // TRC20, BEP20, ERC20, SOL, BTC
+  name         String  // "Tron (TRC-20)", "BNB Smart Chain (BEP-20)", ...
+  addressFamily String // TRON | EVM | SOLANA | BITCOIN — controls address/tx formats
+  confirmationsRequired Int @default(2)
+  avgSettleMinutes Int  @default(2) // shown to customers as an ETA
+  feeNote      String? // e.g. "Lowest fees — recommended"
+  depositAddress String? // admin-fixed gateway wallet; all orders on this network pay here
+  recommended  Boolean @default(false)
+  sortOrder    Int     @default(100)
+  enabled      Boolean @default(true)
+
+  orders       SellOrder[]
+
+  @@unique([assetId, code])
+}
+
+model SellOrder {
+  id              String      @id @default(cuid())
+  reference       String      @unique // human-friendly e.g. RR-20260806-XXXXXX
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  assetId         String
+  asset           Asset       @relation(fields: [assetId], references: [id])
+  networkId       String?
+  network         AssetNetwork? @relation(fields: [networkId], references: [id])
+
+  cryptoAmount    Decimal     @db.Decimal(28, 10)
+  lockedRateInr   Decimal     @db.Decimal(18, 2) // INR per 1 unit of asset at quote time
+  grossInr        Decimal     @db.Decimal(18, 2)
+  platformFeeInr  Decimal     @db.Decimal(18, 2)
+  tdsInr          Decimal     @db.Decimal(18, 2) // 1% TDS u/s 194S
+  netInr          Decimal     @db.Decimal(18, 2)
+
+  status          OrderStatus @default(QUOTE)
+  quoteExpiresAt  DateTime
+  depositAddress  String?
+  depositTxHash   String?
+  depositBlockNumber Int?     // block of the real on-chain transfer (live networks)
+  confirmations   Int         @default(0)
+  failureReason   String?
+
+  bankAccountId   String?
+  payout          Payout?
+
+  createdViaApiKeyId String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  completedAt     DateTime?
+
+  events          OrderEvent[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+}
+
+model OrderEvent {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     SellOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    OrderStatus
+  message   String
+  createdAt DateTime @default(now())
+
+  @@index([orderId, createdAt])
+}
+
+model Payout {
+  id            String       @id @default(cuid())
+  orderId       String       @unique
+  order         SellOrder    @relation(fields: [orderId], references: [id])
+  bankAccountId String
+  bankAccount   BankAccount  @relation(fields: [bankAccountId], references: [id])
+  amountInr     Decimal      @db.Decimal(18, 2)
+  mode          String       @default("IMPS") // IMPS | NEFT | UPI
+  utr           String?      // bank reference number
+  status        PayoutStatus @default(PENDING)
+  failureReason String?
+  createdAt     DateTime     @default(now())
+  settledAt     DateTime?
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label      String
+  prefix     String    @unique // rr_live_xxxx (first 12 chars, shown in UI)
+  keyHash    String    // sha256 of full key
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+model WebhookEndpoint {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url        String
+  secret     String   // HMAC signing secret
+  enabled    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  deliveries WebhookDelivery[]
+}
+
+model WebhookDelivery {
+  id           String   @id @default(cuid())
+  endpointId   String
+  endpoint     WebhookEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+  eventType    String   // order.completed, order.deposit_confirmed, ...
+  payload      Json
+  statusCode   Int?
+  success      Boolean  @default(false)
+  attempts     Int      @default(0)
+  lastAttempt  DateTime?
+  createdAt    DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String   // e.g. "user.login", "order.create", "kyc.approve"
+  detail    String?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
