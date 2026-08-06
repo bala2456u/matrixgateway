@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "start": "prisma migrate deploy && next start",
+    "start": "next start",
+    "release": "prisma migrate deploy && prisma db seed",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
@@ -20,9 +21,11 @@
     "lucide-react": "^1.28.0",
     "next": "16.3.0",
     "pg": "^8.22.0",
+    "prisma": "^7.9.1",
     "qrcode": "^1.5.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "tsx": "^4.23.8",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -34,9 +37,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
-    "prisma": "^7.9.1",
     "tailwindcss": "^4",
-    "tsx": "^4.23.8",
     "typescript": "^5"
   }
 }
